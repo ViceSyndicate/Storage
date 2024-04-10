@@ -20,16 +20,20 @@ namespace Storage.Controllers
             _context = context;
         }
 
-        public IActionResult VMIndex()
+        public async Task<IActionResult> IndexProducts()
         {
-            IEnumerable<ProductViewModel> productsVM;
-            
-            var allProducts = _context.Product.ToListAsync();
-            var result = allProducts.Result;
-            productsVM = result.Select(x => new ProductViewModel { });
-            Console.WriteLine(allProducts.GetType);
+            var result = _context.Product.Select(x => new ProductViewModel
+            {
+                Name = x.Name,
+                Price = x.Price,
+                Count = x.Count,
+                InventoryValue = x.Count // Sum of all prices?
 
-            return View(productsVM);
+            });
+
+            Console.WriteLine(result.GetType);
+
+            return View(result);
         }
 
         // GET: Products
