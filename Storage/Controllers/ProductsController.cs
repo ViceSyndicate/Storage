@@ -20,23 +20,14 @@ namespace Storage.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> IndexProducts()
+        public async Task<IActionResult> Index2()
         {
-
-            var eachItemTypesSumValue = _context.Product
-                .GroupBy(x => x.Name).
-                Select(group => new ProductViewModel
-                {
-                    Name = group.Key,
-                    InventoryValue = group.Sum(x => x.Price)
-                }).ToList();
-
             var result = _context.Product.Select(x => new ProductViewModel
             {
                 Name = x.Name,
                 Price = x.Price,
                 Count = x.Count,
-                //InventoryValue = x.
+                InventoryValue = x.Price * x.Count
             });
 
             Console.WriteLine(result.GetType);
