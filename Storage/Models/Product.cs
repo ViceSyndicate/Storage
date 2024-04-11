@@ -8,7 +8,7 @@ namespace Storage.Models
         [Required(ErrorMessage = "{0} is required")]
         [StringLength(50, MinimumLength = 2)]
         public string Name { get; set; }
-        [Required(ErrorMessage = "{1} is required")]
+        [Required(ErrorMessage = "{0} is required")]
         [Range(0, int.MaxValue)]
         public int Price { get; set; }
         [DataType(DataType.Date)]

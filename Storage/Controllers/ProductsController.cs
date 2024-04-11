@@ -22,16 +22,25 @@ namespace Storage.Controllers
 
         public async Task<IActionResult> IndexProducts()
         {
+
+            var eachItemTypesSumValue = _context.Product
+                .GroupBy(x => x.Name).
+                Select(group => new ProductViewModel
+                {
+                    Name = group.Key,
+                    InventoryValue = group.Sum(x => x.Price)
+                }).ToList();
+
             var result = _context.Product.Select(x => new ProductViewModel
             {
                 Name = x.Name,
                 Price = x.Price,
                 Count = x.Count,
-                InventoryValue = x.Count // Sum of all prices?
-
+                //InventoryValue = x.
             });
 
             Console.WriteLine(result.GetType);
+            Console.WriteLine(result);
 
             return View(result);
         }
