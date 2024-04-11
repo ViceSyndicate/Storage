@@ -30,10 +30,23 @@ namespace Storage.Controllers
                 InventoryValue = x.Price * x.Count
             });
 
-            Console.WriteLine(result.GetType);
-            Console.WriteLine(result);
-
             return View(result);
+        }
+
+        public async Task<IActionResult> Filter(string searchField)
+        {
+            //IQueryable<Product> query = _context.Product;
+
+            //if (!string.IsNullOrEmpty(category))
+                var result = _context.Product.Where(x => x.Name.Contains(searchField)).
+                Select(x => new ProductViewModel
+                {
+                    Name = x.Name,
+                    Price = x.Price,
+                    Count = x.Count,
+                    InventoryValue = x.Price * x.Count
+                });
+            return View("Index2", result);
         }
 
         // GET: Products
