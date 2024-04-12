@@ -13,7 +13,7 @@
 <form asp-action="Filter" method="get">
     <div class="input-group mb-3">
         <input type="text" class="form-control" name="searchField" placeholder="Search..." />
-        <select class="form-select" aria-label="Category" name="selectedCategory">
+        <select class="form-select-sm" aria-label="Category" name="selectedCategory">
             <option selected>Categories</option>
             @foreach (var category in ViewBag.Categories)
             {

@@ -57,7 +57,7 @@ namespace Storage.Controllers
 
             IQueryable<Product> query = _context.Product;
 
-            if (!string.IsNullOrEmpty(selectedCategory) && selectedCategory != "Category")
+            if (!string.IsNullOrEmpty(selectedCategory) && selectedCategory != "Categories")
             {
                 query = query.Where(x => x.Category == selectedCategory);
             }
