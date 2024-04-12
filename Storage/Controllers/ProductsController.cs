@@ -22,41 +22,61 @@ namespace Storage.Controllers
 
         public async Task<IActionResult> Index2()
         {
+
+            IEnumerable<SelectListItem> categories = _context.Product.
+                Select(x => x.Category).
+                Distinct().
+                Select(c => new SelectListItem
+                {
+                    Text = c,
+                    Value = c
+                }).ToList();
+
             var result = _context.Product.Select(x => new ProductViewModel
             {
                 Name = x.Name,
                 Price = x.Price,
                 Count = x.Count,
+                Category = x.Category,
                 InventoryValue = x.Price * x.Count
             });
-
+            ViewBag.Categories = categories;
             return View(result);
         }
 
-        public async Task<IActionResult> Filter(string searchField)
+        public async Task<IActionResult> Filter(string searchField, string selectedCategory)
         {
+            IEnumerable<SelectListItem> categories = _context.Product.
+                Select(x => x.Category).
+                Distinct().
+                Select(c => new SelectListItem
+                {
+                    Text = c,
+                    Value = c
+                }).ToList();
+
             IQueryable<Product> query = _context.Product;
+
+            if (!string.IsNullOrEmpty(selectedCategory) && selectedCategory != "Category")
+            {
+                query = query.Where(x => x.Category == selectedCategory);
+            }
 
             if (!string.IsNullOrEmpty(searchField))
             {
-                var result = _context.Product.Where(x => x.Name.Contains(searchField)).
-                Select(x => new ProductViewModel
-                {
-                    Name = x.Name,
-                    Price = x.Price,
-                    Count = x.Count,
-                    InventoryValue = x.Price * x.Count
-                });
-                return View("Index2", result);
+                query = _context.Product.Where(x => x.Name.Contains(searchField));
             }
-            var resultEmptySearchField = query.Select(x => new ProductViewModel
+
+            var result = query.Select(x => new ProductViewModel
             {
                 Name = x.Name,
                 Price = x.Price,
                 Count = x.Count,
+                Category = x.Category,
                 InventoryValue = x.Price * x.Count
             });
-            return View("Index2", resultEmptySearchField);
+            ViewBag.Categories = categories;
+            return View("Index2", result);
         }
 
         // GET: Products
